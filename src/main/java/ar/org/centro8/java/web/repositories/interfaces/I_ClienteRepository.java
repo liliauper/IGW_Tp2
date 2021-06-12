@@ -57,24 +57,15 @@ public interface I_ClienteRepository {
                 .collect(Collectors.toList());
     }
 
-    
-    
-      default List<Cliente> getBuscar(String apellido, String numeroDocumento) {
-        
-         if(!numeroDocumento.equals("")){
-            return getLikeNumeroDocumento(numeroDocumento);
-         }
-         
-         else if(apellido.equals("")){ 
-             return getAll()
-                        .stream()
-                        .collect(Collectors.toList());
+    default List<Cliente> getLikeApellidoNumeroDocumento(String apellido, String numeroDocumento) {
+        if (apellido == null || numeroDocumento == null) {
+            return new ArrayList();
+        }
+        return getAll()
+                .stream()
+                .filter(c -> c.getApellido().toLowerCase().contains(apellido.toLowerCase())
+                && c.getNumeroDocumento().contains(numeroDocumento))
+                .collect(Collectors.toList());
 
-         
-         }else{
-             return getLikeApellido(apellido);
-         
-         }
-      
     }
 }
